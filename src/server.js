@@ -1,7 +1,6 @@
 import express from 'express';
 import MySQL from './MySQL.js';
 import { join } from 'path';
-import bodyParser from 'body-parser';
 
 const app = express();
 
@@ -17,10 +16,9 @@ const resultHandle = (err, qres, res) => {
 }
 
 app.get('/api/articles/:name', (req, res) => {
-    const articleName = req.params.name;
     MySQL.query({
         sql: 'CALL GetArticle(?)',
-        values: [articleName], timeout: 10000
+        values: [req.params.name], timeout: 10000
     }, (err, qres) => resultHandle(err, qres, res));
 });
 

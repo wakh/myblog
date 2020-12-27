@@ -8,7 +8,6 @@ app.use(express.static(join(__dirname, '/build')));
 app.use(express.json());
 
 const resultHandle = (res, qres) => {
-    console.log(qres);
     res.status(200).send({
         upvotes: qres[0][0].upvotes,
         comments: qres[1]

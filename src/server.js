@@ -55,4 +55,4 @@ app.get('*', (req, res) => {
     res.sendFile(join(__dirname, '/build/index.html'));
 });
 
-app.listen(55555);
+app.listen(3000);

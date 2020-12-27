@@ -7,7 +7,7 @@ const app = express();
 app.use(express.static(join(__dirname, '/build')));
 app.use(express.json());
 
-const resultHandle = (err, qres, res) => {
+const resultHandle = async (err, qres, res) => {
     if (err) res.status(500).send(err);
     else res.status(200).send({
         upvotes: qres[0][0].upvotes,
@@ -20,7 +20,6 @@ app.get('/api/articles/:name', (req, res) => {
         sql: 'CALL GetArticle(?)',
         values: [req.params.name], timeout: 10000
     }, (err, qres) => resultHandle(err, qres, res));
-    MySQL.end()
 });
 
 app.get('/api/articles/:name/upvote', (req, res) => {
@@ -28,7 +27,6 @@ app.get('/api/articles/:name/upvote', (req, res) => {
         sql: 'CALL UpVote(?)',
         values: [req.params.name], timeout: 10000
     }, (err, qres) => resultHandle(err, qres, res));
-    MySQL.end()
 });
 
 app.post('/api/articles/:name/add-comment', (req, res) => {
@@ -37,7 +35,6 @@ app.post('/api/articles/:name/add-comment', (req, res) => {
         sql: 'CALL AddComment(?, ?, ?)',
         values: [req.params.name, username, comment], timeout: 10000
     }, (err, qres) => resultHandle(err, qres, res));
-    MySQL.end()
 });
 
 app.get('/api/test', (req, res) => {
@@ -48,11 +45,10 @@ app.get('/api/test', (req, res) => {
         if (err) res.send(err);
         else res.send(qres);
     });
-    MySQL.end()
 })
 
 app.get('*', (req, res) => {
     res.sendFile(join(__dirname, '/build/index.html'));
 });
 
-app.listen(3000);
+app.listen(3000, () => console.log('listening on port 3000'));

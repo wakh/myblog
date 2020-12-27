@@ -1,5 +1,6 @@
 import mysql from 'mysql';
-const MySQL = mysql.createConnection({
+const MySQL = mysql.createPool({
+    connectionLimit: 10,
     host: '160.153.41.3',
     user: 'myblog',
     password: '545394',

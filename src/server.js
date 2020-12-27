@@ -20,6 +20,7 @@ app.get('/api/articles/:name', (req, res) => {
         sql: 'CALL GetArticle(?)',
         values: [req.params.name], timeout: 10000
     }, (err, qres) => resultHandle(err, qres, res));
+    MySQL.end()
 });
 
 app.get('/api/articles/:name/upvote', (req, res) => {
@@ -27,6 +28,7 @@ app.get('/api/articles/:name/upvote', (req, res) => {
         sql: 'CALL UpVote(?)',
         values: [req.params.name], timeout: 10000
     }, (err, qres) => resultHandle(err, qres, res));
+    MySQL.end()
 });
 
 app.post('/api/articles/:name/add-comment', (req, res) => {
@@ -35,6 +37,7 @@ app.post('/api/articles/:name/add-comment', (req, res) => {
         sql: 'CALL AddComment(?, ?, ?)',
         values: [req.params.name, username, comment], timeout: 10000
     }, (err, qres) => resultHandle(err, qres, res));
+    MySQL.end()
 });
 
 app.get('/api/test', (req, res) => {
@@ -44,7 +47,8 @@ app.get('/api/test', (req, res) => {
     }, (err, qres) => {
         if (err) res.send(err);
         else res.send(qres);
-    })
+    });
+    MySQL.end()
 })
 
 app.get('*', (req, res) => {

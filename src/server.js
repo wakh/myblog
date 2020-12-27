@@ -15,34 +15,24 @@ const resultHandle = (res, qres) => {
 }
 
 app.get('/api/articles/:name', async (req, res) => {
-    try {
-        const [qres, field] = await (await MySQL).execute({
-            sql: 'CALL GetArticle(?)',
-            values: [req.params.name], timeout: 10000
-        });
-        resultHandle(res, qres);
-    } catch (err) { res.status(500).send(err); }
+    await MySQL({
+        sql: 'CALL GetArticle(?)',
+        values: [req.params.name], timeout: 10000
+    }, qres => resultHandle(res, qres), err => res.status(500).send(err));
 });
 
 app.get('/api/articles/:name/upvote', async (req, res) => {
-    try {
-        const [qres, field] = await (await MySQL).execute({
-            sql: 'CALL UpVote(?)',
-            values: [req.params.name], timeout: 10000
-        });
-        resultHandle(res, qres);
-    } catch (err) { res.status(500).send(err); }
+    await MySQL({
+        sql: 'CALL UpVote(?)',
+        values: [req.params.name], timeout: 10000
+    }, qres => resultHandle(res, qres), err => res.status(500).send(err));
 });
 
 app.post('/api/articles/:name/add-comment', async (req, res) => {
-    try {
-        const { username, comment } = req.body;
-        const [qres, field] = await (await MySQL).execute({
-            sql: 'CALL AddComment(?, ?, ?)',
-            values: [req.params.name, username, comment], timeout: 10000
-        });
-        resultHandle(res, qres);
-    } catch (err) { res.status(500).send(err); }
+    await MySQL({
+        sql: 'CALL AddComment(?, ?, ?)',
+        values: [req.params.name, username, comment], timeout: 10000
+    }, qres => resultHandle(res, qres), err => res.status(500).send(err));
 });
 
 app.get('*', (req, res) => {

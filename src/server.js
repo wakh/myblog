@@ -29,6 +29,7 @@ app.get('/api/articles/:name/upvote', async (req, res) => {
 });
 
 app.post('/api/articles/:name/add-comment', async (req, res) => {
+    const { username, comment } = req.body;
     await MySQL({
         sql: 'CALL AddComment(?, ?, ?)',
         values: [req.params.name, username, comment], timeout: 10000
